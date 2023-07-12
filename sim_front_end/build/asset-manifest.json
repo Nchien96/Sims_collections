@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.87103120.css",
+    "main.js": "/static/js/main.f46df78a.js",
+    "static/media/nftMaketplace.png": "/static/media/nftMaketplace.f1522911c570b49a5677.png",
+    "index.html": "/index.html",
+    "main.87103120.css.map": "/static/css/main.87103120.css.map",
+    "main.f46df78a.js.map": "/static/js/main.f46df78a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87103120.css",
+    "static/js/main.f46df78a.js"
+  ]
+}
