@@ -719,10 +719,18 @@ const Card = ({ nft }) => {
 
 const MySims = () => {
   let [nfts, setNfts] = useState([]);
-  const [shouldReaload, reload] = useState(false);
-  const reloadEffect = () => {
-    reload(!shouldReaload);
+  const [end, setEnd] = useState(4);
+  const [count] = useState(4);
+  const [collection, setCollection] = useState([]);
+
+  const getCollection = () => {
+    return nfts.slice(0, end);
   };
+
+  useEffect(() => {
+    setCollection(getCollection());
+  }, [nfts, end]);
+
   useEffect(() => {
     const getAllSim = async () => {
       try {
@@ -738,8 +746,7 @@ const MySims = () => {
       }
     };
     getAllSim();
-    reloadEffect();
-  }, [shouldReaload]);
+  }, []);
 
   return (
     <div className="bg-[#151c25] gradient-bg-artworks">
@@ -749,7 +756,7 @@ const MySims = () => {
         </h4>
 
         <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-3  py-2.5">
-          {nfts.map((nft, i) => (
+          {collection.map((nft, i) => (
             <Card key={i} nft={nft} />
           ))}
         </div>
@@ -760,6 +767,7 @@ const MySims = () => {
           className="shadow-xl shadow-black text-white
             bg-[#e32970] hover:bg-[#bd255f]
             rounded-full cursor-pointer p-2"
+          onClick={() => setEnd(end + count)}
         >
           Load More
         </button>
