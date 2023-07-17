@@ -7,7 +7,7 @@ const network = NETWORK.eth;
 // General metadata for Ethereum
 const namePrefix = "CryptoSims";
 const description = "Crypto Sims Collection";
-const baseUri = "ipfs://QmNVay8d15A3jRgwLRWxoFGWF1vNXPSBrnBfUwzzAmXNrz";
+const baseUri = "ipfs://QmY56RcaKwyta5eQ63ok6VrVbuTjqbfagBwzFYkNJLP2fY";
 
 const solanaMetadata = {
   symbol: "SIM",
@@ -24,7 +24,7 @@ const solanaMetadata = {
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
-    growEditionSizeTo: 10,
+    growEditionSizeTo: 150,
     layersOrder: [
       { name: "bodies" },
       { name: "eyes" },

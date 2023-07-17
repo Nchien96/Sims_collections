@@ -38,12 +38,12 @@ async function main() {
   // console.log("SIMSCrowdSale address:", icoAddress);
   // Config.setConfig(network + ".ICO", icoAddress);
 
-  // // Sims Deploy
-  // console.log("deploy from address: ", deployer.address);
-  // const Sims = await ethers.deployContract("Sim");
-  // const usdtAddress = await Sims.getAddress();
-  // console.log("Sims address:", usdtAddress);
-  // Config.setConfig(network + ".Sims", usdtAddress);
+  // Sims Deploy
+  console.log("deploy from address: ", deployer.address);
+  const Sims = await ethers.deployContract("Sim");
+  const SimsAddress = await Sims.getAddress();
+  console.log("Sims address:", SimsAddress);
+  Config.setConfig(network + ".Sims", SimsAddress);
 
   // // SimMarketPlace Deploy
   // console.log("deploy from address: ", deployer.address);
@@ -55,15 +55,15 @@ async function main() {
   // console.log("Marketplace address:", MarketplaceAddress);
   // Config.setConfig(network + ".SimMarketplace", MarketplaceAddress);
 
-  // Auction Deploy
-  console.log("deploy from address: ", deployer.address);
-  const Auction = await ethers.deployContract("Auction", [
-    "0xFf028FdB776f7a03A397eEb6c0f8de0feE04dC98",
-    "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
-  ]);
-  const AuctionAddress = await Auction.getAddress();
-  console.log("Marketplace address:", AuctionAddress);
-  Config.setConfig(network + ".Auction", AuctionAddress);
+  // // Auction Deploy
+  // console.log("deploy from address: ", deployer.address);
+  // const Auction = await ethers.deployContract("Auction", [
+  //   "0xFf028FdB776f7a03A397eEb6c0f8de0feE04dC98",
+  //   "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
+  // ]);
+  // const AuctionAddress = await Auction.getAddress();
+  // console.log("Marketplace address:", AuctionAddress);
+  // Config.setConfig(network + ".Auction", AuctionAddress);
 
   await Config.updateConfig();
 }

@@ -705,7 +705,6 @@ const Sim = () => {
   const initialState = { accounts: [] };
   const [wallet, setWallet] = useState(initialState);
   const web3 = new Web3(window.ethereum);
-  
 
   useEffect(() => {
     const refreshAccounts = (accounts) => {
