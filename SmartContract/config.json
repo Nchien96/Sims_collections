@@ -7,7 +7,8 @@
     "ICO": "0xB9181FccfC4150D866d8ca04EE0Fea19Eb220f18",
     "Sims": "0xCAC9CBB13dDF7e1Efdf51626b52d1DbA872636D3",
     "SimMarketplace": "0x37a116dDc7968FcB92C0a68c8249Bf76cC579716",
-    "Auction": "0xa9341d822CF4aEd4bD3057aD23ae974cb35DF173"
+    "Auction": "0xa9341d822CF4aEd4bD3057aD23ae974cb35DF173",
+    "Faucet": "0xD2acB270e102BEeCE5efbeD54075635e55d27310"
   },
   "main": {}
 }

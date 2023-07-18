@@ -38,12 +38,12 @@ async function main() {
   // console.log("SIMSCrowdSale address:", icoAddress);
   // Config.setConfig(network + ".ICO", icoAddress);
 
-  // Sims Deploy
-  console.log("deploy from address: ", deployer.address);
-  const Sims = await ethers.deployContract("Sim");
-  const SimsAddress = await Sims.getAddress();
-  console.log("Sims address:", SimsAddress);
-  Config.setConfig(network + ".Sims", SimsAddress);
+  // // Sims Deploy
+  // console.log("deploy from address: ", deployer.address);
+  // const Sims = await ethers.deployContract("Sim");
+  // const SimsAddress = await Sims.getAddress();
+  // console.log("Sims address:", SimsAddress);
+  // Config.setConfig(network + ".Sims", SimsAddress);
 
   // // SimMarketPlace Deploy
   // console.log("deploy from address: ", deployer.address);
@@ -64,6 +64,13 @@ async function main() {
   // const AuctionAddress = await Auction.getAddress();
   // console.log("Marketplace address:", AuctionAddress);
   // Config.setConfig(network + ".Auction", AuctionAddress);
+
+  // Faucet Deploy
+  console.log("deploy from address: ", deployer.address);
+  const Faucet = await ethers.deployContract("Faucet");
+  const FaucetAddress = await Faucet.getAddress();
+  console.log("Faucet address:", FaucetAddress);
+  Config.setConfig(network + ".Faucet", FaucetAddress);
 
   await Config.updateConfig();
 }

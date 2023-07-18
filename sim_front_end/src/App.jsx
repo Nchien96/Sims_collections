@@ -1,17 +1,17 @@
-import "./App";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import MySims from "./components/MySims";
 import Footer from "./components/Footer";
-import Sim from "./components/Sim";
+import HomePage from "./components/Home/Home";
+import Donate from "./components/Donate/Donate";
 
 function App() {
   return (
-    <div className="">
-      <div className="gradient-bg-hero">
-        <Header />
-        <Sim />
-      </div>
-      <MySims />
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/Donate" element={<Donate />}></Route>
+      </Routes>
       <Footer />
     </div>
   );

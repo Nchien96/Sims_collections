@@ -1,5 +1,5 @@
-import nftMk from "../assets/nftMaketplace.png";
-import identicon from "../assets/identicon.png";
+import nftMk from "../../assets/nftMaketplace.png";
+import identicon from "../../assets/identicon.png";
 import React, { useState, useEffect } from "react";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { Web3 } from "web3";

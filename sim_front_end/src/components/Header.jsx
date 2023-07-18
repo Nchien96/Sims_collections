@@ -1,5 +1,6 @@
 import simLogo from "../assets/sim.png";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { Web3 } from "web3";
 
@@ -107,31 +108,43 @@ const Header = () => {
   };
 
   return (
-    <div className="w-4/5 flex md:justify-center justify-between items-center py-4 mx-auto ">
-      <div className="md:flex-[0.5] flex-initial justify-center items-center">
-        <img className="w-32 cursor-pointer" src={simLogo} alt="Logo" />
-      </div>
-      <ul
-        className="md:flex-[0.5] text-white md:flex
+    <div className="gradient-bg-header">
+      <div className="w-4/5 flex md:justify-center justify-between items-center py-4 mx-auto ">
+        <div className="md:flex-[0.5] flex-initial justify-center items-center">
+          <Link to="/">
+            <img className="w-32 cursor-pointer" src={simLogo} alt="Logo" />
+          </Link>
+        </div>
+        <ul
+          className="md:flex-[0.5] text-white md:flex
       hidden list-none flex-row justify-between 
       items-center flex-initial"
-      >
-        <li className="mx-4 cursor-pointer">Donate</li>
-        <li className="mx-4 cursor-pointer">Ico</li>
-        <li className="mx-4 cursor-pointer">Maketplace</li>
-        <li className="mx-4 cursor-pointer">Community</li>
-      </ul>
+        >
+          <li className="mx-4 cursor-pointer">
+            <Link to="/Donate">Donate</Link>
+          </li>
+          <li className="mx-4 cursor-pointer">
+            <Link to="/Ico">Ico</Link>
+          </li>
+          <li className="mx-4 cursor-pointer">
+            <Link to="/Maketplace">Maketplace</Link>
+          </li>
+          <li className="mx-4 cursor-pointer">
+            <Link to="/Community">Community</Link>
+          </li>
+        </ul>
 
-      <button
-        className="shadow-xl shadow-black text-white
+        <button
+          className="shadow-xl shadow-black text-white
       bg-[#e32970] hover:bg-[#bd255f] md:text-sm p-2
         rounded-full cursor-pointer "
-        onClick={handleConnect}
-      >
-        {wallet.accounts.length > 0
-          ? trucate(wallet.accounts[0], 4, 4, 11)
-          : "Connect Wallet"}
-      </button>
+          onClick={handleConnect}
+        >
+          {wallet.accounts.length > 0
+            ? trucate(wallet.accounts[0], 4, 4, 11)
+            : "Connect Wallet"}
+        </button>
+      </div>
     </div>
   );
 };
