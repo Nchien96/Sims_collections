@@ -26,17 +26,17 @@ async function main() {
   // console.log("USDT address:", usdtAddress);
   // Config.setConfig(network + ".USDT", usdtAddress);
 
-  // // simsCrowdSale Deploy
-  // console.log("deploy from address: ", deployer.address);
-  // const ico = await ethers.deployContract("SIMSCrowdSale", [
-  //   1000,
-  //   100,
-  //   "0x98Adf81933909Cd32fA9E59a8C5bC82E99C5f3e4",
-  //   " ",
-  // ]);
-  // const icoAddress = await ico.getAddress();
-  // console.log("SIMSCrowdSale address:", icoAddress);
-  // Config.setConfig(network + ".ICO", icoAddress);
+  // simsCrowdSale Deploy
+  console.log("deploy from address: ", deployer.address);
+  const ico = await ethers.deployContract("SIMSCrowdSale", [
+    1000,
+    100,
+    "0x98Adf81933909Cd32fA9E59a8C5bC82E99C5f3e4",
+    "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
+  ]);
+  const icoAddress = await ico.getAddress();
+  console.log("SIMSCrowdSale address:", icoAddress);
+  Config.setConfig(network + ".ICO", icoAddress);
 
   // // Sims Deploy
   // console.log("deploy from address: ", deployer.address);
@@ -65,12 +65,19 @@ async function main() {
   // console.log("Marketplace address:", AuctionAddress);
   // Config.setConfig(network + ".Auction", AuctionAddress);
 
-  // Faucet Deploy
-  console.log("deploy from address: ", deployer.address);
-  const Faucet = await ethers.deployContract("Faucet");
-  const FaucetAddress = await Faucet.getAddress();
-  console.log("Faucet address:", FaucetAddress);
-  Config.setConfig(network + ".Faucet", FaucetAddress);
+  // // Faucet Deploy
+  // console.log("deploy from address: ", deployer.address);
+  // const Faucet = await ethers.deployContract("Faucet");
+  // const FaucetAddress = await Faucet.getAddress();
+  // console.log("Faucet address:", FaucetAddress);
+  // Config.setConfig(network + ".Faucet", FaucetAddress);
+
+  // // Donate Deploy
+  // console.log("deploy from address: ", deployer.address);
+  // const Donate = await ethers.deployContract("Donate");
+  // const DonateAddress = await Donate.getAddress();
+  // console.log("Donate address:", DonateAddress);
+  // Config.setConfig(network + ".Donate", DonateAddress);
 
   await Config.updateConfig();
 }

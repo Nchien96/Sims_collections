@@ -63,17 +63,21 @@ const Header = () => {
 
     const getProvider = async () => {
       const provider = await detectEthereumProvider();
-      console.log(provider);
-      await switchNetwork(bsctestID);
-      await setHasProvider(provider);
+      if (provider !== null) {
+        console.log(provider);
+        await switchNetwork(bsctestID);
+        await setHasProvider(provider);
 
-      if (provider) {
-        const accounts = await window.ethereum.request({
-          method: "eth_accounts",
-        });
+        if (provider) {
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
 
-        await refreshAccounts(accounts);
-        window.ethereum.on("accountsChanged", refreshAccounts);
+          await refreshAccounts(accounts);
+          window.ethereum.on("accountsChanged", refreshAccounts);
+        }
+      } else {
+        alert("you need to install metamask");
       }
     };
 
@@ -109,28 +113,37 @@ const Header = () => {
 
   return (
     <div className="gradient-bg-header">
-      <div className="w-4/5 flex md:justify-center justify-between items-center py-4 mx-auto ">
-        <div className="md:flex-[0.5] flex-initial justify-center items-center">
+      <div className="w-4/5 flex lg:justify-center justify-between items-center py-4 mx-auto ">
+        <div className="lg:flex-[0.5] flex-initial justify-center items-center">
           <Link to="/">
-            <img className="w-32 cursor-pointer" src={simLogo} alt="Logo" />
+            <img className="w-40 cursor-pointer" src={simLogo} alt="Logo" />
           </Link>
         </div>
+
         <ul
-          className="md:flex-[0.5] text-white md:flex
+          className="lg:flex-[0.5] text-white lg:flex
       hidden list-none flex-row justify-between 
-      items-center flex-initial"
+      items-center flex-initial mx-7 text-[25px]"
         >
           <li className="mx-4 cursor-pointer">
-            <Link to="/Donate">Donate</Link>
+            <Link to="/">
+              <strong>Home</strong>
+            </Link>
           </li>
           <li className="mx-4 cursor-pointer">
-            <Link to="/Ico">Ico</Link>
+            <Link to="/Ico">
+              <strong>Ico</strong>
+            </Link>
           </li>
           <li className="mx-4 cursor-pointer">
-            <Link to="/Maketplace">Maketplace</Link>
+            <Link to="/Maketplace">
+              <strong>Maketplace</strong>
+            </Link>
           </li>
           <li className="mx-4 cursor-pointer">
-            <Link to="/Community">Community</Link>
+            <Link to="/Donate">
+              <strong>Donate</strong>
+            </Link>
           </li>
         </ul>
 

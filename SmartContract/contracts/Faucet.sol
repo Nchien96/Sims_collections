@@ -52,8 +52,6 @@ contract Faucet is Ownable {
             "Insufficient account balance"
         );
 
-        SafeERC20.safeApprove(token, address(this), _amount);
-
         SafeERC20.safeTransferFrom(
             token,
             msg.sender,

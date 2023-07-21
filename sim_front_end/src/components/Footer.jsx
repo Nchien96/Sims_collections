@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import simLogo from "../assets/sim.png";
 const Footer = () => {
   return (
@@ -9,18 +10,30 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-1 justify-evenly items-center flex-wrap sm:mt-0 mt-5 w-full">
-          <p className="text-white text-base text-center mx-2 cursor-pointer">
-            Market
-          </p>
-          <p className="text-white text-base text-center mx-2 cursor-pointer">
-            Artist
-          </p>
-          <p className="text-white text-base text-center mx-2 cursor-pointer">
-            Features
-          </p>
-          <p className="text-white text-base text-center mx-2 cursor-pointer">
-            Community
-          </p>
+          <Link
+            to="/"
+            className="text-white text-base text-center mx-2 cursor-pointer"
+          >
+            Home
+          </Link>
+          <Link
+            to="/Ico"
+            className="text-white text-base text-center mx-2 cursor-pointer"
+          >
+            Ico
+          </Link>
+          <Link
+            to="/Maketplace"
+            className="text-white text-base text-center mx-2 cursor-pointer"
+          >
+            Maketplace
+          </Link>
+          <Link
+            to="/Donate"
+            className="text-white text-base text-center mx-2 cursor-pointer"
+          >
+            Donate
+          </Link>
         </div>
       </div>
     </div>
