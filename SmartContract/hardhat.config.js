@@ -11,6 +11,10 @@ module.exports = {
     },
   },
 
+  paths: {
+    artifacts: "../sim_front_end/src/abis/build", // Đường dẫn đến thư mục muốn lưu trữ tệp .json
+  },
+
   networks: {
     bsctest: {
       url: `https://data-seed-prebsc-1-s1.binance.org:8545/`,

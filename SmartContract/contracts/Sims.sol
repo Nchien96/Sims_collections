@@ -13,7 +13,7 @@ interface ISim {
     function mint(address to) external returns (uint256);
 }
 
-contract Sim is ERC721Enumerable, Ownable,  ISim {
+contract Sim is ERC721Enumerable, Ownable, ISim {
     using Counters for Counters.Counter;
     using Strings for uint256;
     Counters.Counter private _tokenIdTracker;
@@ -24,7 +24,6 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
     uint256 public maxSupply = 10000;
     bool public paused = false;
 
-
     struct sim {
         uint id;
         address owner;
@@ -33,13 +32,10 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
     }
 
     sim[] public sims;
- 
 
     event Mint(address to, uint256 tokenid);
 
-    constructor() ERC721("SimNft", "Sim") {
-        
-    }
+    constructor() ERC721("SimNft", "Sim") {}
 
     function _baseURI()
         internal
@@ -50,11 +46,7 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
         return _url;
     }
 
-    function _basePNG()
-        internal
-        view
-        returns (string memory _newBasePNG)
-    {
+    function _basePNG() internal view returns (string memory _newBasePNG) {
         return _urlpng;
     }
 
@@ -67,14 +59,7 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
         _mint(to, token_id);
         emit Mint(to, token_id);
 
-        sims.push(
-            sim(
-                token_id,
-                to,
-                tokenURI(token_id),
-                tokenPNG(token_id)
-                ) 
-        );
+        sims.push(sim(token_id, to, tokenURI(token_id), tokenPNG(token_id)));
 
         return token_id;
     }
@@ -91,6 +76,15 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
         return (ids);
     }
 
+    function getNFTs(address owner) external view returns (sim[] memory) {
+        uint balance = balanceOf(owner);
+        sim[] memory simss = new sim[](balance);
+        for (uint i = 0; i < balance; i++) {
+            simss[i] = sims[tokenOfOwnerByIndex(owner, i) - 1];
+        }
+        return (simss);
+    }
+
     function setBaseUrl(string memory _newUrl) public onlyOwner {
         _url = _newUrl;
     }
@@ -99,9 +93,7 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
         _urlpng = _newUrlPng;
     }
 
-    function tokenPNG(
-        uint256 tokenId
-    ) public view returns (string memory) {
+    function tokenPNG(uint256 tokenId) public view returns (string memory) {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
@@ -145,28 +137,13 @@ contract Sim is ERC721Enumerable, Ownable,  ISim {
         paused = _state;
     }
 
-    function getNFTs( address owner) external view returns (sim[] memory) {
-        uint balance = balanceOf(owner);
-         sim[] memory simss = new sim[](balance);
-        for (uint i = 0; i < balance; i++) {
-            simss[i] = sims[tokenOfOwnerByIndex(owner, i)-1] ;
-        }
-        return simss;
-    }
-
     function withdraw() public onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
 
     function supportsInterface(
         bytes4 interfaceId
-    )
-        public
-        view
-        virtual
-        override(ERC721Enumerable)
-        returns (bool)
-    {
+    ) public view virtual override(ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

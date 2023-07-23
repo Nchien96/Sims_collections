@@ -29,10 +29,10 @@ const Footer = () => {
             Maketplace
           </Link>
           <Link
-            to="/Donate"
+            to="/Faucet"
             className="text-white text-2xl text-center mx-2 cursor-pointer"
           >
-            Donate
+            Faucet
           </Link>
         </div>
       </div>

@@ -6,9 +6,11 @@ import {
   simTokeContract,
   donateContract,
   donateAddress,
+  simsTokenAddress,
+  usdtAddress,
 } from "../../abis/abis";
 
-const Donate = () => {
+const Faucet = () => {
   const initialState = { accounts: [] };
   const [wallet, setWallet] = useState(initialState);
   const [balance, setBalance] = useState();
@@ -38,11 +40,30 @@ const Donate = () => {
         method: "eth_requestAccounts",
       });
 
-      const getBalance = await FaucetContract.methods
-        .requesttoken()
-        .send({ from: accounts[0] });
+      await FaucetContract.methods.requesttoken().send({ from: accounts[0] });
+      await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: simsTokenAddress,
+            symbol: "SIM",
+            decimals: 18,
+          },
+        },
+      });
 
-      console.log(getBalance);
+      await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: usdtAddress,
+            symbol: "USDT",
+            decimals: 18,
+          },
+        },
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -68,11 +89,16 @@ const Donate = () => {
       let accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      let donateAmount = Number(document.getElementById("inputField").value);
+      let donateAmount = await Number(
+        document.getElementById("inputField").value
+      );
+      console.log(donateAmount);
       let allowance = await SimTokeContract.methods
         .allowance(accounts[0], donateAddress)
         .call();
-      let allowanceFromWei = await web3.utils.fromWei(allowance, "ether");
+      let allowanceFromWei = await Number(
+        web3.utils.fromWei(allowance, "ether")
+      );
       console.log(allowanceFromWei);
       if (allowanceFromWei < donateAmount) {
         await approve(donateAmount);
@@ -119,7 +145,7 @@ const Donate = () => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl min-w-max "
               onClick={donate}
             >
-              Donate
+              Donate Sim
             </button>
             <button
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-2xl  min-w-max"
@@ -145,4 +171,4 @@ const Donate = () => {
   );
 };
 
-export default Donate;
+export default Faucet;

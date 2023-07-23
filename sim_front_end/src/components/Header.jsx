@@ -141,8 +141,8 @@ const Header = () => {
             </Link>
           </li>
           <li className="mx-4 cursor-pointer">
-            <Link to="/Donate">
-              <strong>Donate</strong>
+            <Link to="/Faucet">
+              <strong>Faucet</strong>
             </Link>
           </li>
         </ul>

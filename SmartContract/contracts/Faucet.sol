@@ -7,21 +7,32 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
 contract Faucet is Ownable {
     address payable owners;
-    IERC20 public token;
+    IERC20 public tokenSim;
+    IERC20 public tokenUsdt;
     uint public faucetAmount = 50 * (10 ** 18);
     uint public locktime = 1 minutes;
     mapping(address => uint) nextAccessTime;
+
+    struct balances {
+        uint Sim;
+        uint Usdt;
+    }
+
+    balances public myBalances;
 
     constructor() payable {
         owners = payable(msg.sender);
     }
 
-    function setToken(address tokenAddress) public onlyOwner {
-        token = IERC20(tokenAddress);
+    function setTokenSim(address tokenAddress) public onlyOwner {
+        tokenSim = IERC20(tokenAddress);
+    }
+
+    function setTokenUsdt(address tokenAddress) public onlyOwner {
+        tokenUsdt = IERC20(tokenAddress);
     }
 
     event Deposit(address indexed form, uint indexed amount);
-    event withdraw(address indexed to, uint256 value);
 
     function requesttoken() public {
         require(
@@ -29,7 +40,11 @@ contract Faucet is Ownable {
             "Request must not originate from a zero account"
         );
         require(
-            token.balanceOf(address(this)) >= faucetAmount,
+            tokenSim.balanceOf(address(this)) >= faucetAmount,
+            "Insufficient balance in faucet for withdrawl request"
+        );
+        require(
+            tokenUsdt.balanceOf(address(this)) >= faucetAmount,
             "Insufficient balance in faucet for withdrawl request"
         );
         require(
@@ -39,7 +54,8 @@ contract Faucet is Ownable {
 
         nextAccessTime[msg.sender] = block.timestamp + locktime;
 
-        token.transfer(msg.sender, faucetAmount);
+        tokenSim.transfer(msg.sender, faucetAmount);
+        tokenUsdt.transfer(msg.sender, faucetAmount);
     }
 
     receive() external payable {
@@ -48,20 +64,34 @@ contract Faucet is Ownable {
 
     function deposits(uint _amount) external {
         require(
-            token.balanceOf(msg.sender) >= _amount,
+            tokenSim.balanceOf(msg.sender) >= _amount,
+            "Insufficient account balance"
+        );
+        require(
+            tokenUsdt.balanceOf(msg.sender) >= _amount,
             "Insufficient account balance"
         );
 
         SafeERC20.safeTransferFrom(
-            token,
+            tokenSim,
+            msg.sender,
+            address(this),
+            _amount * (10 ** 18)
+        );
+        SafeERC20.safeTransferFrom(
+            tokenUsdt,
             msg.sender,
             address(this),
             _amount * (10 ** 18)
         );
     }
 
-    function getBalance() external view returns (uint) {
-        return token.balanceOf(address(this));
+    function getBalance() external returns (balances memory) {
+        myBalances = balances(
+            tokenSim.balanceOf(address(this)),
+            tokenUsdt.balanceOf(address(this))
+        );
+        return myBalances;
     }
 
     function setFaucetAmount(uint amount) public onlyOwner {
@@ -73,7 +103,7 @@ contract Faucet is Ownable {
     }
 
     function withdraws() external onlyOwner {
-        emit withdraw(msg.sender, token.balanceOf(address(this)));
-        token.transfer(msg.sender, token.balanceOf(address(this)));
+        tokenUsdt.transfer(msg.sender, tokenUsdt.balanceOf(address(this)));
+        tokenSim.transfer(msg.sender, tokenSim.balanceOf(address(this)));
     }
 }

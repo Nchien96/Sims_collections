@@ -26,17 +26,17 @@ async function main() {
   // console.log("USDT address:", usdtAddress);
   // Config.setConfig(network + ".USDT", usdtAddress);
 
-  // simsCrowdSale Deploy
-  console.log("deploy from address: ", deployer.address);
-  const ico = await ethers.deployContract("SIMSCrowdSale", [
-    1000,
-    100,
-    "0x98Adf81933909Cd32fA9E59a8C5bC82E99C5f3e4",
-    "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
-  ]);
-  const icoAddress = await ico.getAddress();
-  console.log("SIMSCrowdSale address:", icoAddress);
-  Config.setConfig(network + ".ICO", icoAddress);
+  // // simsCrowdSale Deploy
+  // console.log("deploy from address: ", deployer.address);
+  // const ico = await ethers.deployContract("SIMSCrowdSale", [
+  //   1000,
+  //   100,
+  //   "0x98Adf81933909Cd32fA9E59a8C5bC82E99C5f3e4",
+  //   "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
+  // ]);
+  // const icoAddress = await ico.getAddress();
+  // console.log("SIMSCrowdSale address:", icoAddress);
+  // Config.setConfig(network + ".ICO", icoAddress);
 
   // // Sims Deploy
   // console.log("deploy from address: ", deployer.address);
@@ -45,15 +45,15 @@ async function main() {
   // console.log("Sims address:", SimsAddress);
   // Config.setConfig(network + ".Sims", SimsAddress);
 
-  // // SimMarketPlace Deploy
-  // console.log("deploy from address: ", deployer.address);
-  // const SimMarketplace = await ethers.deployContract("SimMarketplace", [
-  //   "0xFf028FdB776f7a03A397eEb6c0f8de0feE04dC98",
-  //   "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
-  // ]);
-  // const MarketplaceAddress = await SimMarketplace.getAddress();
-  // console.log("Marketplace address:", MarketplaceAddress);
-  // Config.setConfig(network + ".SimMarketplace", MarketplaceAddress);
+  // SimMarketPlace Deploy
+  console.log("deploy from address: ", deployer.address);
+  const SimMarketplace = await ethers.deployContract("SimMarketplace", [
+    "0xCAC9CBB13dDF7e1Efdf51626b52d1DbA872636D3",
+    "0xaCE7f7970BCb344fEA5387e4ecEd6EC0559A3C7D",
+  ]);
+  const MarketplaceAddress = await SimMarketplace.getAddress();
+  console.log("Marketplace address:", MarketplaceAddress);
+  Config.setConfig(network + ".SimMarketplace", MarketplaceAddress);
 
   // // Auction Deploy
   // console.log("deploy from address: ", deployer.address);
