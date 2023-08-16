@@ -16,12 +16,23 @@ contract SimMarketplace is IERC721Receiver, Ownable {
     string private _urlpng;
     string public baseExtensionPng = ".png";
 
+    receive() external payable {}
+
     struct ListDetail {
         address payable author;
         uint256 price;
         uint256 tokenId;
         string tokenPNG;
     }
+
+    struct Bundle {
+        address payable author;
+        uint256 price;
+        uint256[] tokenId;
+    }
+
+    uint256[] public bundles;
+    mapping(uint256 => Bundle) public bundleInfo;
 
     event ListNFT(address indexed _from, uint256 _tokenId, uint256 _price);
     event UnlistNFT(address indexed _from, uint256 _tokenId);
@@ -118,6 +129,136 @@ contract SimMarketplace is IERC721Receiver, Ownable {
 
         nft.safeTransferFrom(msg.sender, address(this), _tokenId);
         emit ListNFT(msg.sender, _tokenId, _price);
+    }
+
+    function multiListNft(
+        uint256[] calldata _tokenId,
+        uint256[] calldata _price
+    ) public {
+        require(
+            _tokenId.length == _price.length,
+            "Input arrays must have the same lenght"
+        );
+
+        for (uint256 i; i < _tokenId.length; i++) {
+            uint256 tokenId = _tokenId[i];
+            uint256 price = _price[i];
+
+            require(
+                nft.ownerOf(tokenId) == msg.sender,
+                "You are not the owner of this NFT"
+            );
+            require(
+                nft.getApproved(tokenId) == address(this),
+                "Marketplace is not approved to transfer this NFT"
+            );
+
+            listDetail[tokenId] = ListDetail(
+                payable(msg.sender),
+                price,
+                tokenId,
+                tokenPNG(tokenId)
+            );
+
+            nft.safeTransferFrom(msg.sender, address(this), tokenId);
+            emit ListNFT(msg.sender, tokenId, price);
+        }
+    }
+
+    function bundleList(
+        uint256[] calldata _tokenId,
+        uint256 bundlePrice
+    ) external {
+        require(
+            _tokenId.length > 1,
+            "At least two NFT must be included in the bundle"
+        );
+
+        for (uint256 i; i < _tokenId.length; i++) {
+            uint256 tokenId = _tokenId[i];
+
+            require(
+                nft.ownerOf(tokenId) == msg.sender,
+                "You are not the owner of this NFT"
+            );
+            require(
+                nft.getApproved(tokenId) == address(this),
+                "Marketplace is not approved to transfer this NFT"
+            );
+
+            nft.safeTransferFrom(msg.sender, address(this), tokenId);
+        }
+
+        uint bundleId = bundles.length;
+        bundles.push(bundleId);
+
+        bundleInfo[bundleId] = Bundle({
+            author: payable(msg.sender),
+            price: bundlePrice,
+            tokenId: _tokenId
+        });
+    }
+
+    function buyBundle(uint256 bundleId) public {
+        Bundle storage bundle = bundleInfo[bundleId];
+        require(bundle.author != address(0), "Bundle does not exist");
+        require(
+            token.balanceOf(msg.sender) >= bundle.price * (10 ** 18),
+            "Insufficient account balance"
+        );
+
+        for (uint256 i = 0; i < bundle.tokenId.length; i++) {
+            uint256 tokenId = bundle.tokenId[i];
+            require(
+                nft.ownerOf(tokenId) == address(this),
+                "This NFT doesn't exist on marketplace"
+            );
+        }
+
+        SafeERC20.safeTransferFrom(
+            token,
+            msg.sender,
+            address(this),
+            bundle.price * (10 ** 18)
+        );
+
+        for (uint256 i = 0; i < bundle.tokenId.length; i++) {
+            uint256 tokenId = bundle.tokenId[i];
+            nft.safeTransferFrom(address(this), msg.sender, tokenId);
+        }
+
+        token.transfer(
+            bundle.author,
+            ((bundle.price * (10 ** 18)) * (100 - tax)) / 100
+        );
+        delete bundleInfo[bundleId];
+    }
+
+    function unlistBundle(uint256 bundleId) public {
+        Bundle storage bundle = bundleInfo[bundleId];
+        require(
+            bundle.author == msg.sender,
+            "You are not the owner of this bundle"
+        );
+
+        for (uint256 i = 0; i < bundle.tokenId.length; i++) {
+            uint256 tokenId = bundle.tokenId[i];
+            require(
+                nft.ownerOf(tokenId) == address(this),
+                "This NFT doesn't exist on marketplace"
+            );
+
+            nft.safeTransferFrom(address(this), bundle.author, tokenId);
+        }
+
+        delete bundleInfo[bundleId];
+    }
+
+    function getBundleInfo(
+        uint bundleId
+    ) external view returns (address, uint, uint[] memory) {
+        Bundle storage bundle = bundleInfo[bundleId];
+        return (bundle.author, bundle.price, bundle.tokenId);
     }
 
     function updateListingNftPrice(uint256 _tokenId, uint256 _price) public {
