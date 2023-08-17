@@ -131,6 +131,9 @@ contract SimMarketplace is IERC721Receiver, Ownable {
         emit ListNFT(msg.sender, _tokenId, _price);
     }
 
+    // sell 10 Nft at the same time on the market, each Nft has a different price
+    // take input parameters 2 arrays, 1 array contains tokenId of Nft, 1 array contains price of that Nft
+
     function multiListNft(
         uint256[] calldata _tokenId,
         uint256[] calldata _price
@@ -164,6 +167,9 @@ contract SimMarketplace is IERC721Receiver, Ownable {
             emit ListNFT(msg.sender, tokenId, price);
         }
     }
+
+    // pack and sell Nfts in 1 sale
+    // takes as input an array containing tokenIds of Nfts and the selling price of that NFt package
 
     function bundleList(
         uint256[] calldata _tokenId,
